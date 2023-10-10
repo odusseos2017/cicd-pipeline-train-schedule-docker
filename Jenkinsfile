@@ -51,10 +51,13 @@ pipeline {
                   verbose: true,
                   transfers: [
                     sshTransfer(
+                      execCommand: "docker pull odusseos2017/train-schedule:${env.BUILD_NUMBER}"
+                    ),
+                    sshTransfer(
                       sourceFiles: 'script/docker-script.sh',
                       removePrefix: 'script/',
                       remoteDirectory: "",
-                      execCommand: "docker pull odusseos2017/train-schedule:${env.BUILD_NUMBER} ; ./jenkins/docker-script.sh"
+                      execCommand: "chmod +x ./jenkins/docker-script.sh ; ./jenkins/docker-script.sh"
                     )
                   ]
                 )
