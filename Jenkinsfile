@@ -37,5 +37,28 @@ pipeline {
 	    }
 	  }
         }
+        stage('DeployToProduction') {
+          when {
+            branch 'master'
+          }
+          steps {      
+            sshPublisher(
+              failOnError: true,
+              continueOnError: false,
+              publishers: [
+                sshPublisherDesc(
+                  configName: 'Production',
+                  verbose: true,
+                  transfers: [
+                    sshTransfer(
+                      execCommand: "docker pull odusseos2017/train-schedule:${env.BUILD_NUMBER} ;
+                        docker stop train-schedule ; "
+                    )
+                  ]
+                )
+              ]
+            )
+          }
+        }
     }
 }
