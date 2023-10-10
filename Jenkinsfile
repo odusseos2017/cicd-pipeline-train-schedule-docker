@@ -51,7 +51,10 @@ pipeline {
                   verbose: true,
                   transfers: [
                     sshTransfer(
-                      execCommand: "id ; docker pull odusseos2017/train-schedule:${env.BUILD_NUMBER} ; docker stop train-schedule "
+                      sourceFiles: 'script/docker-script.sh',
+                      removePrefix: 'script/',
+                      remoteDirectory: "",
+                      execCommand: "docker pull odusseos2017/train-schedule:${env.BUILD_NUMBER} ; ./docker-script.sh"
                     )
                   ]
                 )
